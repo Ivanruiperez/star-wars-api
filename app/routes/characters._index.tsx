@@ -47,7 +47,15 @@ export default function Characters() {
 			setPage(numberOne);
 		}
 	}, [characterFiltered, data, setPage]);
-
+	if (isLoading)
+		return (
+			<div
+				className="flex items-center justify-center h-screen"
+				data-testid="loader"
+			>
+				<Loader color={colors.primary.c100} />
+			</div>
+		);
 	if (error) return `${strings.anErrorHasOccurred} ${error.message}`;
 	if (!data) {
 		return null;
@@ -81,40 +89,27 @@ export default function Characters() {
 					/>
 				</div>
 			</div>
-
-			{isLoading ? (
-				<div className="flex items-center justify-center h-screen">
-					<Loader color={colors.primary.c100} />
+			{!charactersList.length ? (
+				<div className="justify-center flex">
+					{strings.noCharactersFound}
 				</div>
 			) : (
-				<>
-					{!charactersList.length ? (
-						<div className="justify-center flex">
-							{strings.noCharactersFound}
-						</div>
-					) : (
-						<ul className="flex flex-col justify-center items-center">
-							{charactersList.map((character: Character) => {
-								const id = getIdFromCharacterUrl(character.url);
-								return (
-									<li
-										key={id}
-										onClick={() =>
-											navigate(
-												`/characters/${id}?page=${page}`
-											)
-										}
-										className="cursor-pointer w-1/2"
-									>
-										<CharacterListItem
-											character={character}
-										/>
-									</li>
-								);
-							})}
-						</ul>
-					)}
-				</>
+				<ul className="flex flex-col justify-center items-center">
+					{charactersList.map((character: Character) => {
+						const id = getIdFromCharacterUrl(character.url);
+						return (
+							<li
+								key={id}
+								onClick={() =>
+									navigate(`/characters/${id}?page=${page}`)
+								}
+								className="cursor-pointer w-1/2"
+							>
+								<CharacterListItem character={character} />
+							</li>
+						);
+					})}
+				</ul>
 			)}
 			<PaginationButtons
 				previous={data.previous}
