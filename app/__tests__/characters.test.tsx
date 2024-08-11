@@ -8,7 +8,7 @@ import { MemoryRouter } from "react-router-dom";
 import * as reactQuery from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
 
-import Characters from "./characters._index";
+import Characters from "../routes/characters._index";
 import { strings } from "../constants";
 import { CharacterListItem } from "../components/CharacterListItem/CharacterListItem";
 import { Character } from "../types";
