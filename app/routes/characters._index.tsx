@@ -60,7 +60,11 @@ export default function Characters() {
 	}, [isSuccess, allData]);
 
 	useEffect(() => {
-		navigate(`?page=${page}`);
+		if (page >= numberTen || isNaN(page)) {
+			navigate("/404");
+		} else {
+			navigate(`?page=${page}`);
+		}
 	}, [page, navigate]);
 
 	useEffect(() => {
@@ -132,7 +136,7 @@ export default function Characters() {
 	const currentPage = characterFiltered ? filteredPage : page;
 
 	return (
-		<div className="flex flex-col" data-testid="characters-container">
+		<div className="flex flex-col">
 			<h1 className="items-center justify-center flex mt-5">
 				<span>{strings.characters}</span>
 			</h1>

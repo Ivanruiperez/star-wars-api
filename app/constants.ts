@@ -11,6 +11,9 @@ export const strings = {
 	next: "Next",
 	previous: "Previous",
 	search: "Search",
+	GoBackToHome: "Go back to Home",
+	youHaveBrokenC3PO: "You have broken C3PO",
+	notFoundPage: "404",
 };
 export const defaultIconSize = 24;
 export const emptyString = "";

@@ -42,4 +42,10 @@ describe("Characters Component", () => {
 		cy.get("[data-testid='loader']").should("exist");
 		cy.get("[data-testid='no characters found']").should("exist");
 	});
+
+	it("404 page", () => {
+		cy.visit("http://localhost:5173/characters/1000");
+		cy.get("[data-testid='loader']").should("exist");
+		cy.get("[data-testid='404']").should("exist");
+	});
 });
