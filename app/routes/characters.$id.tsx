@@ -3,14 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 
 import { baseUrl, defaultIconSize, strings } from "../constants";
 import { CharacterDetail } from "../components/CharacterDetail/CharacterDetail";
-import { usePageNumber } from "../hooks/usePage.hook";
-import { BackIcon } from "../components/icons/BackIcon";
 import Spinner from "../components/Spinner/spinner";
 import { useEffect } from "react";
 
 export default function CharactersId() {
 	const { id } = useParams();
-	const { page } = usePageNumber();
 	const navigate = useNavigate();
 	const { isLoading, error, data } = useQuery({
 		queryKey: ["characterDetail"],
@@ -34,17 +31,7 @@ export default function CharactersId() {
 	return (
 		data && (
 			<div>
-				<h1 className="justify-center flex">
-					{strings.characterDetail}
-				</h1>
-				<div className="ml-5">
-					<button
-						onClick={() => navigate(`/characters?page=${page}`)}
-					>
-						<BackIcon size={defaultIconSize} />
-					</button>
-				</div>
-				<div className="flex justify-center">
+				<div className="flex justify-center mt-5">
 					<CharacterDetail character={data} />
 				</div>
 			</div>

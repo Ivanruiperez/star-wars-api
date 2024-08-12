@@ -1,6 +1,7 @@
 import {
 	Links,
 	Meta,
+	MetaFunction,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
@@ -11,6 +12,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@mantine/core/styles.css";
 
 const queryClient = new QueryClient();
+
+export const meta: MetaFunction = () => {
+	return [{ title: "May the Force be with you" }];
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (

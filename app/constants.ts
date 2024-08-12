@@ -4,9 +4,8 @@ export const numberOne = 1;
 export const numberTen = 10;
 export const strings = {
 	noCharactersFound: "No characters found",
-	characters: "CHARACTERS",
+	characters: "STAR WARS CHARACTERS",
 	anErrorHasOccurred: "An error has occurred: ",
-	characterDetail: "CHARACTER DETAIL",
 	films: "FILMS",
 	next: "Next",
 	previous: "Previous",
