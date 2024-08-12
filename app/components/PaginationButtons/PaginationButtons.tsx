@@ -2,7 +2,6 @@ import { Button } from "@mantine/core";
 
 import { NextIcon } from "../icons/NextIcon";
 import { BackIcon } from "../icons/BackIcon";
-import { getNumberPageFromUrl } from "../../utils";
 import { defaultIconSize, strings } from "../../constants";
 import { colors } from "../../theme/colors";
 
@@ -11,6 +10,7 @@ type PaginationButtonsProps = {
 	next: string | null;
 	onPrevious: () => void;
 	onNext: () => void;
+	currentPage: number;
 };
 
 export const PaginationButtons = ({
@@ -18,8 +18,8 @@ export const PaginationButtons = ({
 	next,
 	onPrevious,
 	onNext,
+	currentPage,
 }: PaginationButtonsProps) => {
-	const numberPage = getNumberPageFromUrl(previous, next);
 	return (
 		<div className="flex justify-center items-center my-5">
 			<div className="mx-5">
@@ -42,7 +42,7 @@ export const PaginationButtons = ({
 					{strings.previous}
 				</Button>
 			</div>
-			<span>{numberPage}</span>
+			<span>{currentPage}</span>
 			<div className="mx-5">
 				<Button
 					variant="light"

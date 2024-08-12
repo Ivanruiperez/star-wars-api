@@ -30,7 +30,10 @@ export const CharacterFilmsList = ({ films }: CharacterFilmsProps) => {
 	return (
 		<div className="justify-center flex p-4 my-4">
 			<div className="flex-col">
-				<h2 className="justify-center items-center flex">
+				<h2
+					className="justify-center items-center flex"
+					data-testid="films"
+				>
 					{strings.films}
 				</h2>
 				{isLoading ? (

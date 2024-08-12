@@ -10,7 +10,8 @@
 		"src/**/*.test.ts",
 		"src/**/*.test.tsx",
 		"jest.setup.js",
-		"remix.env.d.ts"
+		"remix.env.d.ts",
+		"cypress.config.js"
 	],
 	"compilerOptions": {
 		"lib": ["DOM", "DOM.Iterable", "ES2022"],
@@ -18,7 +19,8 @@
 			"@remix-run/node",
 			"vite/client",
 			"jest",
-			"@testing-library/jest-dom"
+			"@testing-library/jest-dom",
+			"cypress"
 		],
 		"isolatedModules": true,
 		"esModuleInterop": true,

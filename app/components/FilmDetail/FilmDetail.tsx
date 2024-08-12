@@ -17,6 +17,7 @@ export const FilmDetail = ({ film }: FilmDetailProps) => {
 			<li
 				onClick={() => open()}
 				className="cursor-pointer bg-primary-c100 m-5 rounded-md p-2 items-center justify-center flex text-gray-c100"
+				data-testid="film-list-item"
 			>
 				{film.title}
 			</li>
@@ -39,7 +40,10 @@ export const FilmDetail = ({ film }: FilmDetailProps) => {
 					},
 				}}
 			>
-				<div className="flex flex-col items-center justify-center">
+				<div
+					className="flex flex-col items-center justify-center"
+					data-testid="film detail"
+				>
 					<p className="text-xl mb-5 text-primary-c100">
 						{film.title}
 					</p>

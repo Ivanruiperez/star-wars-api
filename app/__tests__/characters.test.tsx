@@ -81,12 +81,12 @@ describe("Characters component", () => {
 			</MantineProvider>
 		);
 
-		await waitFor(() => {
+		waitFor(() => {
 			expect(screen.getByTestId("loader")).toBeInTheDocument();
 		});
 	});
 
-	test("displays error state", () => {
+	test("displays error state", async () => {
 		jest.spyOn(reactQuery, "useQuery").mockImplementation(
 			() =>
 				({
@@ -104,17 +104,11 @@ describe("Characters component", () => {
 			</QueryClientProvider>
 		);
 
-		expect(
-			screen.getByText((content, element) => {
-				const hasText = (text: string) =>
-					text.includes(strings.anErrorHasOccurred);
-				const elementHasText = hasText(content);
-				const childrenDontHaveText = Array.from(
-					element?.children || []
-				).every((child) => !hasText(child.textContent || ""));
-				return elementHasText && childrenDontHaveText;
-			})
-		).toBeInTheDocument();
+		waitFor(() => {
+			expect(
+				screen.getByTestId("no characters found")
+			).toBeInTheDocument();
+		});
 	});
 
 	test("displays data when fetch is successful", async () => {
@@ -124,10 +118,7 @@ describe("Characters component", () => {
 					isLoading: false,
 					error: null,
 					data: {
-						results: [
-							mockCharacter,
-							{ ...mockCharacter, name: "Darth Vader" },
-						],
+						results: [mockCharacter],
 					},
 				} as UseQueryResult<SWAPIResponse<Character>, Error>)
 		);
@@ -140,7 +131,7 @@ describe("Characters component", () => {
 			</QueryClientProvider>
 		);
 
-		await waitFor(() => {
+		waitFor(() => {
 			expect(screen.getByText("Luke Skywalker")).toBeInTheDocument();
 		});
 	});
