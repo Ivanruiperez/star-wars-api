@@ -7,9 +7,10 @@ import {
 	ScrollRestoration,
 } from "@remix-run/react";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
-import "./tailwind.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@mantine/core/styles.css";
+
+import "./tailwind.css";
 
 const queryClient = new QueryClient();
 

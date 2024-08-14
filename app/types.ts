@@ -33,3 +33,7 @@ export type Film = {
 	edited: string;
 	url: string;
 };
+
+export type LoaderData = {
+	openaiApiKey: string;
+};

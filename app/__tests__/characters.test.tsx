@@ -4,12 +4,12 @@ import {
 	QueryClientProvider,
 	UseQueryResult,
 } from "@tanstack/react-query";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, createMemoryRouter } from "react-router-dom";
 import * as reactQuery from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
+import { useLoaderData } from "@remix-run/react";
 
 import Characters from "../routes/characters._index";
-import { strings } from "../constants";
 import { CharacterListItem } from "../components/CharacterListItem/CharacterListItem";
 import { Character } from "../types";
 
@@ -41,9 +41,19 @@ const mockCharacter: Character = {
 	url: "https://swapi.dev/api/people/1/",
 };
 
+global.Request = jest.fn().mockImplementation((url, init) => ({
+	url,
+	...init,
+}));
+
 jest.mock("@tanstack/react-query", () => ({
 	...jest.requireActual("@tanstack/react-query"),
 	useQuery: jest.fn(),
+}));
+
+jest.mock("@remix-run/react", () => ({
+	...jest.requireActual("@remix-run/react"),
+	useLoaderData: jest.fn(),
 }));
 
 beforeAll(() => {
@@ -54,6 +64,9 @@ beforeAll(() => {
 		addEventListener: jest.fn(),
 		removeEventListener: jest.fn(),
 	}));
+	(useLoaderData as jest.Mock).mockReturnValue({
+		openaiApiKey: "mocked-api-key",
+	});
 });
 
 describe("Characters component", () => {
@@ -70,6 +83,18 @@ describe("Characters component", () => {
 					data: undefined,
 				} as UseQueryResult<SWAPIResponse<Character>, Error>)
 		);
+
+		const routes = [
+			{
+				path: "/",
+				element: <Characters />,
+				loader: () => ({ openaiApiKey: "test-key" }),
+			},
+		];
+
+		const router = createMemoryRouter(routes, {
+			initialEntries: ["/"],
+		});
 
 		render(
 			<MantineProvider>

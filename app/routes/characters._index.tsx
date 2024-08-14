@@ -2,17 +2,19 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useLoaderData } from "@remix-run/react";
+import { LoaderFunction } from "@remix-run/node";
 
 import { CharacterListItem } from "../components/CharacterListItem/CharacterListItem";
 import { SearchInput } from "../components/SearchInput/SearchInput";
 import { PaginationButtons } from "../components/PaginationButtons/PaginationButtons";
 import Spinner from "../components/Spinner/spinner";
-import { Character } from "../types";
+import { Character, LoaderData } from "../types";
 import {
 	getIdFromCharacterUrl,
 	fetchCharacters,
 	fetchAllCharacters,
-	filterCharacters,
+	filterCharactersWithChatGPT,
 	paginateCharacters,
 	updatePage,
 } from "../utils";
@@ -25,16 +27,28 @@ import {
 	strings,
 } from "../constants";
 
+export const loader: LoaderFunction = async () => {
+	const openaiApiKey = process.env.OPENAI_API_KEY;
+	if (!openaiApiKey) {
+		throw new Error("OPENAI_API_KEY no está definida en el entorno");
+	}
+
+	return { openaiApiKey };
+};
+
 export default function Characters() {
+	const { openaiApiKey } = useLoaderData<LoaderData>();
 	const { page, setPage, navigate } = usePageNumber();
 	const [charactersList, setCharactersList] = useState<Character[]>([]);
 	const [characterFiltered, setCharacterFiltered] =
 		useState<string>(emptyString);
+	const [inputValue, setInputValue] = useState<string>(emptyString);
 	const [allCharacters, setAllCharacters] = useState<Character[]>([]);
 	const [filteredCharacterList, setFilteredCharacterList] = useState<
 		Character[]
 	>([]);
 	const [filteredPage, setFilteredPage] = useState<number>(numberOne);
+	const [isSearching, setIsSearching] = useState<boolean>(false);
 
 	const { isLoading, error, data } = useQuery({
 		queryKey: ["characters", page],
@@ -68,24 +82,35 @@ export default function Characters() {
 	}, [page, navigate]);
 
 	useEffect(() => {
-		if (characterFiltered) {
-			const filtered = filterCharacters(characterFiltered, allCharacters);
-			setFilteredCharacterList(filtered);
-			setFilteredPage(numberOne);
-
-			if (!filtered.length) {
-				setCharactersList([]);
-			} else {
-				const paginatedCharacters = paginateCharacters(
-					filtered,
-					numberOne,
-					numberTen
+		const fetchFilteredCharacters = async () => {
+			setIsSearching(true);
+			setCharactersList([]);
+			if (characterFiltered) {
+				const filtered = await filterCharactersWithChatGPT(
+					characterFiltered,
+					allCharacters,
+					openaiApiKey
 				);
-				setCharactersList(paginatedCharacters);
+				setFilteredCharacterList(filtered);
+				setFilteredPage(numberOne);
+
+				if (!filtered.length) {
+					setCharactersList([]);
+				} else {
+					const paginatedCharacters = paginateCharacters(
+						filtered,
+						numberOne,
+						numberTen
+					);
+					setCharactersList(paginatedCharacters);
+				}
+			} else if (data) {
+				setCharactersList(data.results);
 			}
-		} else if (data) {
-			setCharactersList(data.results);
-		}
+			setIsSearching(false);
+		};
+
+		fetchFilteredCharacters();
 	}, [characterFiltered, allCharacters, data, setPage]);
 
 	useEffect(() => {
@@ -130,28 +155,38 @@ export default function Characters() {
 	};
 
 	const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setCharacterFiltered(event.target.value);
+		setInputValue(event.target.value);
+	};
+
+	const handleSearch = () => {
+		setCharacterFiltered(inputValue);
+	};
+
+	const cleanInput = () => {
+		setInputValue(emptyString);
+		setCharacterFiltered(emptyString);
 	};
 
 	const currentPage = characterFiltered ? filteredPage : page;
-
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col items-center">
 			<h1 className="items-center justify-center flex mt-5">
 				<span>{strings.characters}</span>
 			</h1>
-			<div className="flex justify-center my-5">
+
+			<div className="flex justify-center my-5 relative">
 				<div data-testid="search-input">
 					<SearchInput
 						handleInput={handleChangeInput}
-						characterFiltered={characterFiltered}
-						setCharacterFiltered={setCharacterFiltered}
+						handleSearch={handleSearch}
+						inputValue={inputValue}
+						cleanInput={cleanInput}
 					/>
 				</div>
 			</div>
-			{isLoading || isLoadingFiltered ? (
+			{isLoading || isLoadingFiltered || isSearching ? (
 				<Spinner />
-			) : !charactersList.length ? (
+			) : !charactersList.length && !isSearching ? (
 				<div
 					className="justify-center flex"
 					data-testid="no characters found"
@@ -160,7 +195,7 @@ export default function Characters() {
 				</div>
 			) : (
 				<ul
-					className="flex flex-col justify-center items-center"
+					className="flex flex-col justify-center items-center min-w-full"
 					data-testid="character-list"
 				>
 					{charactersList.map((character: Character) => {

@@ -25,3 +25,4 @@ export const characterDetails = {
 	gender: "Gender: ",
 	birthYear: "Birth year: ",
 };
+export const maxTokensDefault = 1500;
