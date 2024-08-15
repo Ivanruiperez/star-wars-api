@@ -1,10 +1,10 @@
 import { useNavigate, useParams } from "@remix-run/react";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
-import { baseUrl, defaultIconSize, strings } from "../constants";
+import { baseUrl, strings } from "../constants";
 import { CharacterDetail } from "../components/CharacterDetail/CharacterDetail";
 import Spinner from "../components/Spinner/spinner";
-import { useEffect } from "react";
 
 export default function CharactersId() {
 	const { id } = useParams();
@@ -30,10 +30,8 @@ export default function CharactersId() {
 	}
 	return (
 		data && (
-			<div>
-				<div className="flex justify-center mt-5">
-					<CharacterDetail character={data} />
-				</div>
+			<div className="flex justify-center mt-5">
+				<CharacterDetail character={data} />
 			</div>
 		)
 	);

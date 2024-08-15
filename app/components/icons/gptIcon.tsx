@@ -1,9 +1,6 @@
-interface GptIconProps extends React.ComponentPropsWithoutRef<"svg"> {
-	size?: number | string;
-	color?: string;
-}
+import { IconProps } from "~/types";
 
-export const GptIcon = ({ size, color }: GptIconProps) => {
+export const GptIcon = ({ size, color }: IconProps) => {
 	return (
 		<div
 			style={{

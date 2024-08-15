@@ -1,9 +1,6 @@
-interface NextIconProps extends React.ComponentPropsWithoutRef<"svg"> {
-	size?: number | string;
-	color?: string;
-}
+import { IconProps } from "~/types";
 
-export const NextIcon = ({ size, color }: NextIconProps) => {
+export const NextIcon = ({ size, color }: IconProps) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

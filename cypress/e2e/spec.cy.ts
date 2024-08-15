@@ -33,14 +33,12 @@ describe("Characters Component", () => {
 
 	it("Filter characters", () => {
 		cy.get("[data-testid='search-input']").type("Skywalker");
-		cy.get("[data-testid='search-button']").click();
 		cy.get("[data-testid='character-list']").should("exist");
 		cy.get("[data-testid='character-list-item']").should("have.length", 3);
 	});
 
 	it("no characters found", () => {
 		cy.get("[data-testid='search-input']").type("985621451asdxeasfgas");
-		cy.get("[data-testid='search-button']").click();
 		cy.get("[data-testid='loader']").should("exist");
 		cy.get("[data-testid='no characters found']").should("exist");
 	});

@@ -4,10 +4,7 @@ import { Loader } from "@mantine/core";
 import { FilmDetail } from "../FilmDetail/FilmDetail";
 import { baseUrl, numberOne, numberZero, strings } from "../../constants";
 import { colors } from "../../theme/colors";
-
-type CharacterFilmsProps = {
-	films: string[];
-};
+import { CharacterFilmsProps } from "../../types";
 
 export const CharacterFilmsList = ({ films }: CharacterFilmsProps) => {
 	const filmIds = films.map(

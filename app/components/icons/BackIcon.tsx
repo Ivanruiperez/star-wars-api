@@ -1,9 +1,6 @@
-interface BackIconProps extends React.ComponentPropsWithoutRef<"svg"> {
-	size?: number | string;
-	color?: string;
-}
+import { IconProps } from "~/types";
 
-export const BackIcon = ({ size, color }: BackIconProps) => {
+export const BackIcon = ({ size, color }: IconProps) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

@@ -10,6 +10,7 @@ export const strings = {
 	next: "Next",
 	previous: "Previous",
 	search: "Search",
+	aiSearch: "Type to the AI",
 	GoBackToHome: "Go back to Home",
 	youHaveBrokenC3PO: "You have broken C3PO",
 	notFoundPage: "404",
@@ -26,3 +27,5 @@ export const characterDetails = {
 	birthYear: "Birth year: ",
 };
 export const maxTokensDefault = 1500;
+export const experimental = "Experimental";
+export const debounceDefaultTime = 1000;

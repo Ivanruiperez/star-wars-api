@@ -4,11 +4,7 @@ import { CharacterFilmsList } from "../CharacterFilmsList/CharacterFilmsList";
 import { BackIcon } from "../icons/BackIcon";
 import { usePageNumber } from "../../hooks/usePage.hook";
 import { characterDetails, defaultIconSize } from "../../constants";
-import { Character } from "../../types";
-
-type CharacterDetailProps = {
-	character: Character;
-};
+import { CharacterDetailProps } from "../../types";
 
 export const CharacterDetail = ({ character }: CharacterDetailProps) => {
 	const { page } = usePageNumber();

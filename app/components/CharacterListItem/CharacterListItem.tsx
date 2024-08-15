@@ -1,8 +1,4 @@
-import { Character } from "../../types";
-
-type CharacterListItemProps = {
-	character: Character;
-};
+import { CharacterListItemProps } from "../../types";
 
 export const CharacterListItem = ({ character }: CharacterListItemProps) => {
 	return (

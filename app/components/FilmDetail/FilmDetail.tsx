@@ -3,12 +3,8 @@
 import { useDisclosure } from "@mantine/hooks";
 import { Modal } from "@mantine/core";
 
-import { Film } from "../../types";
+import { FilmDetailProps } from "../../types";
 import { colors } from "../../theme/colors";
-
-type FilmDetailProps = {
-	film: Film;
-};
 
 export const FilmDetail = ({ film }: FilmDetailProps) => {
 	const [opened, { open, close }] = useDisclosure(false);
